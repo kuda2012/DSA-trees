@@ -18,18 +18,14 @@ class Tree {
     if (this.root == null) {
       return 0;
     }
-    let toVisitStack = [this][0].root.children;
-    let total = recurseSumValues(toVisitStack, this.root.val);
-    function recurseSumValues(stack, sum) {
-      if (stack.length) {
-        let current = stack.shift();
-        sum += current.val;
-        if (current.children.length > 0) {
-          for (let child of current.children) {
-            stack.push(child);
-          }
+    let toVisitNode = this.root.children;
+    let total = recurseSumValues(toVisitNode, this.root.val);
+    function recurseSumValues(node, sum) {
+      for (let child of node) {
+        sum += child.val;
+        if (child.children.length > 0) {
+          return recurseSumValues(child.children, sum);
         }
-        return recurseSumValues(stack, sum);
       }
       return sum;
     }
@@ -42,20 +38,15 @@ class Tree {
     if (this.root == null) {
       return 0;
     }
-    let toVisitStack = [this][0].root.children;
-    console.log(this.root, toVisitStack);
+    let toVisitNode = this.root.children;
     let isRootEven = this.root.val % 2 == 0 ? 1 : 0;
-    let total = recurseCountEvenValues(toVisitStack, isRootEven);
-    function recurseCountEvenValues(stack, sum) {
-      if (stack.length) {
-        let current = stack.shift();
-        if (current.val % 2 == 0) sum += 1;
-        if (current.children.length > 0) {
-          for (let child of current.children) {
-            stack.push(child);
-          }
+    let total = recurseCountEvenValues(toVisitNode, isRootEven);
+    function recurseCountEvenValues(node, sum) {
+      for (let child of node) {
+        sum += child.val % 2 == 0 ? 1 : 0;
+        if (child.children.length > 0) {
+          return recurseCountEvenValues(child.children, sum);
         }
-        return recurseCountEvenValues(stack, sum);
       }
       return sum;
     }
@@ -69,20 +60,15 @@ class Tree {
     if (this.root == null) {
       return 0;
     }
-    let toVisitStack = [this][0].root.children;
+    let toVisitNode = this.root.children;
     let isRootGreater = this.root.val > lowerBound ? 1 : 0;
-    let total = recurseCountGreaterThans(toVisitStack, isRootGreater);
-    function recurseCountGreaterThans(stack, sum) {
-      let copyStack = stack;
-      if (stack.length) {
-        let current = stack.shift();
-        sum += current.val > lowerBound ? 1 : 0;
-        if (current.children.length > 0) {
-          for (let child of current.children) {
-            stack.push(child);
-          }
+    let total = recurseCountGreaterThans(toVisitNode, isRootGreater);
+    function recurseCountGreaterThans(node, sum) {
+      for (let child of node) {
+        sum += child.val > lowerBound ? 1 : 0;
+        if (child.children.length > 0) {
+          return recurseCountGreaterThans(child.children, sum);
         }
-        return recurseCountGreaterThans(stack, sum);
       }
       return sum;
     }
@@ -91,34 +77,4 @@ class Tree {
   }
 }
 
-let numberTree = new Tree(
-  new TreeNode(1, [
-    new TreeNode(2),
-    new TreeNode(3),
-    new TreeNode(4),
-    new TreeNode(5, [
-      new TreeNode(6),
-      new TreeNode(7),
-      new TreeNode(8),
-      new TreeNode(9),
-      new TreeNode(10),
-    ]),
-  ])
-);
-// let n = new TreeNode(1);
-// let n2 = new TreeNode(2);
-// let n3 = new TreeNode(3);
-// let n4 = new TreeNode(4);
-// let n5 = new TreeNode(5);
-// let n6 = new TreeNode(6);
-// let n7 = new TreeNode(7);
-// let n8 = new TreeNode(8);
-
-// n.children = [n2, n3, n4];
-
-// n4.children.push(n5, n6);
-// n6.children.push(n7);
-// n7.children.push(n8);
-
-// largeTree = new Tree(n);
 module.exports = { Tree, TreeNode };
